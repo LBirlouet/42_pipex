@@ -1,0 +1,4 @@
+ft_printf
+libftprintf.a
+pipex
+pipex.dSYM
