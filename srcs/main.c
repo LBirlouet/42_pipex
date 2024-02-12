@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:00:28 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/02/12 15:25:58 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/02/12 17:41:56 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,25 +60,10 @@ void	one(t_pipex *pipex, char **envp, char **argv, int argc)
 	char *tempo = NULL;
 
 	printf("(1)\n");
-	// if (pipex->i == 0)
-	// {
-	// 	pipex->fd_input = open(argv[1], O_RDONLY | O_CLOEXEC);
-	// 	if (pipex->fd_input == -1)
-	// 	{
-	// 		printf("open pb\n");
-	// 		free_all(pipex, -1);
-	// 	}
-	// }
-	// else if (pipex->i == pipex->pipe_counter)
-	// {
-	// 	pipex->fd_output = open(argv[argc - 1], O_WRONLY | O_TRUNC | O_CLOEXEC | O_CREAT, 0644);
-	// }
-
-
 	pipex->cmd_split = ft_split(argv[pipex->i + 2], ' ');
 	pipex->path_cmd = get_good_path(pipex, 0, tempo, pipex->cmd_split);
 	
-	if (pipex->i == 0)// first
+	if (pipex->i == 0)	// FIRST
 	{
 		pipex->fd_input = open(argv[1], O_RDONLY | O_CLOEXEC);
 		if (pipex->fd_input == -1)
@@ -96,26 +81,19 @@ void	one(t_pipex *pipex, char **envp, char **argv, int argc)
 		v_error(pipex, close (pipex->fd_input), "close :");
 		pipex->fd_input = -1;
 	}
-	else if (pipex->i != pipex->pipe_counter)
+	else if (pipex->i != pipex->pipe_counter)		// MID
 	{
 		printf("|%d|MID ?\n", pipex->i);
 		v_error(pipex, close (pipex->pipe[pipex->i]), "close :");
 		v_error(pipex, dup2(pipex->pipe[pipex->i + 1], STDOUT_FILENO), "dup222");
 		v_error(pipex, close (pipex->pipe[pipex->i + 1]), "close :");
 		// write (1, "MID\n", 4);
-		printf("|%d|MID ?\n", pipex->i);
+	//	printf("|%d|MID ?\n", pipex->i);
 		// v_error(pipex, close (pipex->pipe[pipex->i - 1]), "clossssssssrrrse");
-		v_error(pipex, dup2(pipex->pipe[pipex->i - 1], STDIN_FILENO), "dupppp2");
+		v_error(pipex, dup2(pipex->pipe[pipex->i - 1], STDIN_FILENO), "dupicippp2");
 		v_error(pipex, close (pipex->pipe[pipex->i - 1]), "clossssiuytssssse");
 	}
-	// if (pipex->i != pipex->pipe_counter) 
-	// {
-	// 	printf("|%d|FIRST ET MID ?\n", pipex->i);
-	// 	v_error(pipex, close (pipex->pipe[pipex->i]), "close :");
-	// 	v_error(pipex, dup2(pipex->pipe[pipex->i + 1], STDOUT_FILENO), "dup222");
-	// 	v_error(pipex, close (pipex->pipe[pipex->i + 1]), "close :");
-	// }
-	else
+	else		// FIN
 	{
 		pipex->fd_output = open(argv[argc - 1], O_WRONLY | O_TRUNC | O_CLOEXEC | O_CREAT, 0644);
 		printf("|%d|FIN\n", pipex->i);
@@ -127,27 +105,6 @@ void	one(t_pipex *pipex, char **envp, char **argv, int argc)
 		v_error(pipex, dup2(pipex->fd_output, STDOUT_FILENO), "dupp2");
 		v_error(pipex, close (pipex->fd_output), "clloosssse");
 	}
-
-	// if (pipex->i == 0) //first
-	// {
-	// 	printf("|%d|FIRST\n", pipex->i);
-	// 	v_error(pipex, dup2(pipex->fd_input, STDIN_FILENO),"dup2");
-	// 	v_error(pipex, close (pipex->fd_input), "close :");
-	// 	pipex->fd_input = -1;
-	// }
-	// else if (pipex->i == pipex->pipe_counter) //fin
-	// {
-	// 	printf("|%d|FIN ?\n", pipex->i);
-	// 	v_error(pipex, dup2(pipex->fd_output, STDOUT_FILENO), "dupp2");
-	// 	v_error(pipex, close (pipex->fd_output), "clloosssse");
-	// }
-	// else //mid
-	// {
-	// 	printf("|%d|MID ?\n", pipex->i);
-	// 	// v_error(pipex, close (pipex->pipe[pipex->i - 1]), "clossssssssrrrse");
-	// 	v_error(pipex, dup2(pipex->pipe[pipex->i - 1], STDIN_FILENO), "dupppp2");
-	// 	v_error(pipex, close (pipex->pipe[pipex->i - 1]), "clossssssssse");
-	// }
 	v_error(pipex, execve(pipex->path_cmd, &pipex->cmd_split[0], envp), "execve :");
 }
 
@@ -183,7 +140,10 @@ int	main(int argc, char **argv, char **envp)
 			one(&pipex, envp, argv, argc);
 		}
 		// else
-		// 	wait(NULL);
+		// {
+		// 	waitpid(pipex.cpid, &pipex.pipe[i], 0);
+		// 	waitpid(pipex.cpid, &pipex.pipe[i + 1], 0);
+		// }
 		// printf("||%d||\n", i);
 		i++;
 	}

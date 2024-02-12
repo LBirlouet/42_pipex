@@ -1,4 +1,10 @@
+Makefile
 ft_printf
+includes
 libftprintf.a
+objects
 pipex
 pipex.dSYM
+srcs
+te.txt
+test.txt
