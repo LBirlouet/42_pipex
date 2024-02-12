@@ -1,0 +1,16 @@
+void	child_one(t_pipex *pipex, char **envp, char **argv)
+	v_error(pipex, close (pipex->pipefd[0]));
+	v_error(pipex, close (pipex->pipefd[1]));
+	v_error(pipex, close (pipex->fd_input));
+	v_error(pipex, execve(pipex->path_cmd1, &pipex->cmd1_split[0], envp));
+void	child_two(t_pipex *pipex, char **envp, char **argv)
+	v_error(pipex, close (pipex->pipefd[1]));
+	v_error(pipex, close (pipex->pipefd[0]));
+	v_error(pipex, close (pipex->fd_output));
+	v_error(pipex, execve(pipex->path_cmd2, &pipex->cmd2_split[0], envp));
+	pipex.cpid = fork();
+		child_one(&pipex, envp, argv);
+		pipex.cpid = fork();
+			child_two(&pipex, envp, argv);
+	close(pipex.pipefd[0]);
+	close(pipex.pipefd[1]);
