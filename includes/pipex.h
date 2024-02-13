@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:01:16 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/02/12 13:26:44 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/02/13 08:49:41 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,9 @@ typedef struct s_pipex {
 	int			fd_output;
 	int			fd_input;
 	int			*pipe;
+	int			first_pipe[2];
+	int			sec_pipe[2];
+	
 	int			*pipe_verif;
 	int			i;
 	pid_t		cpid;

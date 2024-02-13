@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:00:28 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/02/12 17:41:56 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/02/13 09:58:48 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,17 @@ int	init_value(t_pipex *pipex, char **argv)
 	pipex->path_list = NULL;
 	pipex->cmd_split = NULL;
 	pipex->path_cmd = NULL;
-	pipex->pipe = malloc(sizeof(int) * pipex->pipe_counter * 2);
-	int i = 0;
-	while (i < pipex->pipe_counter * 2)
-		pipex->pipe[i++] = 0;
-	i = 0;
-	pipex->pipe_verif = malloc(sizeof(int) * pipex->pipe_counter * 2);
-	while (i < pipex->pipe_counter * 2)
-		pipex->pipe_verif[i++] = 0;
+
+	pipe(pipex->first_pipe);
+	pipe(pipex->sec_pipe);
+	// pipex->pipe = malloc(sizeof(int) * pipex->pipe_counter * 2);
+	// int i = 0;
+	// while (i < pipex->pipe_counter * 2)
+	// 	pipex->pipe[i++] = 0;
+	// i = 0;
+	// pipex->pipe_verif = malloc(sizeof(int) * pipex->pipe_counter * 2);
+	// while (i < pipex->pipe_counter * 2)
+	// 	pipex->pipe_verif[i++] = 0;
 	
 	return (0);
 }
@@ -40,18 +43,25 @@ int	init_value(t_pipex *pipex, char **argv)
 // 	free_all(pipex, 0);
 // }
 
-void	close_pipe(t_pipex *pipex)
+// void	close_pipe(t_pipex *pipex)
+// {
+// 	int z = 0;
+// 	while (z < pipex->pipe_counter)
+// 	{
+// 		if (pipex->pipe_verif[z] != -1)
+// 		{
+// 			close(pipex->pipe[z]);
+// 			pipex->pipe_verif[z] = -1;
+// 		}
+// 		z++;
+// 	}
+// 	return ;
+// }
+void	refresh_pipe(int fd[2])
 {
-	int z = 0;
-	while (z < pipex->pipe_counter)
-	{
-		if (pipex->pipe_verif[z] != -1)
-		{
-			close(pipex->pipe[z]);
-			pipex->pipe_verif[z] = -1;
-		}
-		z++;
-	}
+	close(fd[0]);
+	close(fd[1]);
+	pipe(fd);
 	return ;
 }
 
@@ -65,43 +75,59 @@ void	one(t_pipex *pipex, char **envp, char **argv, int argc)
 	
 	if (pipex->i == 0)	// FIRST
 	{
+		printf("|%d|FIRST\n", pipex->i);
+		
+		close (pipex->first_pipe[0]);
+		close (pipex->sec_pipe[0]);
+		close (pipex->sec_pipe[1]);
 		pipex->fd_input = open(argv[1], O_RDONLY | O_CLOEXEC);
 		if (pipex->fd_input == -1)
 		{
 			printf("open pb\n");
 			free_all(pipex, -1);
 		}
-		printf("|%d|FIRST\n", pipex->i);
-		v_error(pipex, close (pipex->pipe[pipex->i]), "close :");
-		v_error(pipex, dup2(pipex->pipe[pipex->i + 1], STDOUT_FILENO), "dup222");
-		v_error(pipex, close (pipex->pipe[pipex->i + 1]), "close :");
-
-		printf("|%d|FIRST\n", pipex->i);
 		v_error(pipex, dup2(pipex->fd_input, STDIN_FILENO),"dup2");
 		v_error(pipex, close (pipex->fd_input), "close :");
+		v_error(pipex, dup2(pipex->first_pipe[1], STDOUT_FILENO), "dup222");
+
+		v_error(pipex, close (pipex->first_pipe[1]), "close :");
 		pipex->fd_input = -1;
 	}
 	else if (pipex->i != pipex->pipe_counter)		// MID
 	{
+		
 		printf("|%d|MID ?\n", pipex->i);
-		v_error(pipex, close (pipex->pipe[pipex->i]), "close :");
-		v_error(pipex, dup2(pipex->pipe[pipex->i + 1], STDOUT_FILENO), "dup222");
-		v_error(pipex, close (pipex->pipe[pipex->i + 1]), "close :");
-		// write (1, "MID\n", 4);
-	//	printf("|%d|MID ?\n", pipex->i);
-		// v_error(pipex, close (pipex->pipe[pipex->i - 1]), "clossssssssrrrse");
-		v_error(pipex, dup2(pipex->pipe[pipex->i - 1], STDIN_FILENO), "dupicippp2");
-		v_error(pipex, close (pipex->pipe[pipex->i - 1]), "clossssiuytssssse");
+		if ((pipex->i % 2) == 0) 
+		{
+			refresh_pipe(pipex->first_pipe);
+			v_error(pipex, dup2(pipex->first_pipe[0], STDIN_FILENO), "dup222");
+			v_error(pipex, dup2(pipex->sec_pipe[1], STDOUT_FILENO), "dupicippppppppppppp2");
+
+		}
+		else if ((pipex->i % 2) == 1) 
+		{
+			refresh_pipe(pipex->sec_pipe);
+			v_error(pipex, dup2(pipex->sec_pipe[0], STDIN_FILENO ), "dup222");
+			v_error(pipex, dup2(pipex->first_pipe[1], STDOUT_FILENO), "dupicipppbloulouiii2");
+		}
+
+		close(pipex->first_pipe[0]);
+		close(pipex->first_pipe[1]);
+		close(pipex->sec_pipe[0]);
+		close(pipex->sec_pipe[1]);
 	}
 	else		// FIN
 	{
-		pipex->fd_output = open(argv[argc - 1], O_WRONLY | O_TRUNC | O_CLOEXEC | O_CREAT, 0644);
-		printf("|%d|FIN\n", pipex->i);
-		v_error(pipex, close (pipex->pipe[pipex->i]), "cloooose");
-		v_error(pipex, dup2(pipex->pipe[pipex->i - 1], STDIN_FILENO), "duppp2");
-		v_error(pipex, close (pipex->pipe[pipex->i - 1]), "clooose");
-
 		printf("|%d|FIN ?\n", pipex->i);
+		close (pipex->first_pipe[1]);
+		close (pipex->sec_pipe[1]);
+		if ((pipex->i % 2) == 0)
+			v_error(pipex, dup2(pipex->first_pipe[0], STDIN_FILENO), "duppp2");
+		else
+			v_error(pipex, dup2(pipex->first_pipe[0], STDIN_FILENO), "duppp2");
+		close (pipex->first_pipe[0]);
+		close (pipex->sec_pipe[0]);
+		pipex->fd_output = open(argv[argc - 1], O_WRONLY | O_TRUNC | O_CLOEXEC | O_CREAT, 0644);
 		v_error(pipex, dup2(pipex->fd_output, STDOUT_FILENO), "dupp2");
 		v_error(pipex, close (pipex->fd_output), "clloosssse");
 	}
@@ -117,66 +143,27 @@ int	main(int argc, char **argv, char **envp)
 	parsing(&pipex);
 	init_value(&pipex, argv);
 	get_env(&pipex, envp);
-	sep_path(&pipex, envp);
-	int y = 0;
-	while (y < pipex.pipe_counter)
-	{
-		v_error(&pipex, pipe(pipex.pipe + (y * 2)), "pipe");
-		pipex.pipe_verif[y * 2] = 0;
-		pipex.pipe_verif[y * 2 + 1] = 0;
-		y++;
-	}
-		
+	sep_path(&pipex, envp);	
 	int i = 0;
 	pipex.i = -1;
-	printf("AHHHH %d\n", pipex.pipe_counter);
+	// printf("AHHHH %d\n", pipex.pipe_counter);
 	while (i < pipex.pipe_counter + 1)
 	{
 		++pipex.i;
 		pipex.cpid = fork();
 		if (pipex.cpid == 0)
 		{
-			printf("|%d| != |%d|\n", i, pipex.pipe_counter - 1);
+			printf("|%d| != |%d|\n", i, pipex.pipe_counter + 1);
 			one(&pipex, envp, argv, argc);
+			exit (0);
 		}
-		// else
+		// else if (pipex.cpid > 0)
+		// 	waitpid(pipex.cpid, 0, 0);
 		// {
 		// 	waitpid(pipex.cpid, &pipex.pipe[i], 0);
 		// 	waitpid(pipex.cpid, &pipex.pipe[i + 1], 0);
 		// }
-		// printf("||%d||\n", i);
 		i++;
 	}
-	
-
-
-	
-	// if (pipex.cpid1 == -1)
-	// 	free_all(&pipex, -1);
-	// if (pipex.cpid1 == 0)
-	// 	child_one(&pipex, envp, argv);
-	// else
-	// {
-	// 	pipex.cpid2 = fork();
-	// 	if (pipex.cpid2 == -1)
-	// 		free_all(&pipex, -1);
-	// 	else if (pipex.cpid2 == 0)
-	// 		child_two(&pipex, envp, argv);
-	// 	parent(&pipex);
-	// }
 	return (0);
 }
-
-
-/*
-while pas a la derniere cmd => fork
-
-derniere cmd => child 2
-*/
-
-/*
-child one => si premier pipe => open le input_file et tt
-sinon ???
-recup le path de la cmd
-comme l'autre version
-*/
