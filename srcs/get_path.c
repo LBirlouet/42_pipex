@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 12:08:57 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/02/12 14:28:11 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/02/13 10:58:17 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,8 @@ void	sep_path(t_pipex *pipex, char **envp)
 char	*get_good_path(t_pipex *pipex, int i, char *tempo, char **cmd_split)
 {
 	char *ret;
+	if (access(*cmd_split, X_OK) == 0)
+		return (*cmd_split);
 	while (i < pipex->path_counter)
 	{
 		tempo = ft_strjoin(pipex->path_list[i], "/");
@@ -78,10 +80,7 @@ char	*get_good_path(t_pipex *pipex, int i, char *tempo, char **cmd_split)
 			ret = NULL;
 		}
 		if ((i + 1) == pipex->path_counter)
-		{
-			printf("SEG ?\n");	
 			free_all(pipex, -1);
-		}
 		i++;
 	}
 	return (ret);

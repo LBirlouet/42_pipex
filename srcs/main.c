@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:00:28 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/02/13 09:58:48 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/02/14 13:32:03 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,13 +69,13 @@ void	one(t_pipex *pipex, char **envp, char **argv, int argc)
 {
 	char *tempo = NULL;
 
-	printf("(1)\n");
+	// printf("(1)\n");
 	pipex->cmd_split = ft_split(argv[pipex->i + 2], ' ');
 	pipex->path_cmd = get_good_path(pipex, 0, tempo, pipex->cmd_split);
 	
 	if (pipex->i == 0)	// FIRST
 	{
-		printf("|%d|FIRST\n", pipex->i);
+		// printf("|%d|FIRST\n", pipex->i);
 		
 		close (pipex->first_pipe[0]);
 		close (pipex->sec_pipe[0]);
@@ -83,7 +83,7 @@ void	one(t_pipex *pipex, char **envp, char **argv, int argc)
 		pipex->fd_input = open(argv[1], O_RDONLY | O_CLOEXEC);
 		if (pipex->fd_input == -1)
 		{
-			printf("open pb\n");
+			// printf("open pb\n");
 			free_all(pipex, -1);
 		}
 		v_error(pipex, dup2(pipex->fd_input, STDIN_FILENO),"dup2");
@@ -96,7 +96,7 @@ void	one(t_pipex *pipex, char **envp, char **argv, int argc)
 	else if (pipex->i != pipex->pipe_counter)		// MID
 	{
 		
-		printf("|%d|MID ?\n", pipex->i);
+		// printf("|%d|MID ?\n", pipex->i);
 		if ((pipex->i % 2) == 0) 
 		{
 			refresh_pipe(pipex->first_pipe);
@@ -118,7 +118,7 @@ void	one(t_pipex *pipex, char **envp, char **argv, int argc)
 	}
 	else		// FIN
 	{
-		printf("|%d|FIN ?\n", pipex->i);
+		// printf("|%d|FIN ?\n", pipex->i);
 		close (pipex->first_pipe[1]);
 		close (pipex->sec_pipe[1]);
 		if ((pipex->i % 2) == 0)
@@ -137,8 +137,7 @@ void	one(t_pipex *pipex, char **envp, char **argv, int argc)
 int	main(int argc, char **argv, char **envp)
 {
 	t_pipex	pipex;
-	char *tempo = NULL;
-
+	// char *tempo = NULL;
 	pipex.argc = argc;
 	parsing(&pipex);
 	init_value(&pipex, argv);
@@ -153,17 +152,24 @@ int	main(int argc, char **argv, char **envp)
 		pipex.cpid = fork();
 		if (pipex.cpid == 0)
 		{
-			printf("|%d| != |%d|\n", i, pipex.pipe_counter + 1);
 			one(&pipex, envp, argv, argc);
 			exit (0);
 		}
 		// else if (pipex.cpid > 0)
-		// 	waitpid(pipex.cpid, 0, 0);
 		// {
 		// 	waitpid(pipex.cpid, &pipex.pipe[i], 0);
 		// 	waitpid(pipex.cpid, &pipex.pipe[i + 1], 0);
 		// }
 		i++;
+	}
+	int test;
+int j = pipex.pipe_counter +1;
+	int status;
+	while (j > 0)
+	{
+		test = waitpid(-1, &status, WNOHANG);
+		if (test > 0)
+			j--;
 	}
 	return (0);
 }
