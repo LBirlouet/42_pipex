@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:01:16 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/02/13 08:49:41 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/02/14 16:29:46 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <stddef.h>
 # include <stdlib.h>
 # include <unistd.h>
+# include <errno.h>
 # include <fcntl.h>
 # include "../ft_printf/ft_printf.h"
 # include <stdio.h>
@@ -61,6 +62,12 @@ char	**ft_split(char const *s, char c);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
 size_t	ft_strlen(const char *str);
+
+void	child_first_cmd(t_pipex *pipex, char **argv);
+void	child_mid_cmd(t_pipex *pipex);
+void	child_last_cmd(t_pipex *pipex, char **argv, int argc);
+void	refresh_pipe(int fd[2]);
+
 
 /*lst*/
 // void	ft_lstdelone(t_cmd *cmd, void (*del)(void *));

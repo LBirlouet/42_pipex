@@ -6,7 +6,7 @@
 #    By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/22 10:57:44 by lbirloue          #+#    #+#              #
-#    Updated: 2024/02/13 10:52:46 by lbirloue         ###   ########.fr        #
+#    Updated: 2024/02/14 15:17:57 by lbirloue         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,6 +24,7 @@ INCLUDES_BONUS	=	includes_bonus/pipex_bonus.h
 SRCS			=	srcs/main.c \
 					srcs/parsing.c \
 					srcs/get_path.c \
+					srcs/childs.c \
 					srcs/utils/ft_split.c \
 					srcs/utils/ft_substr.c \
 					srcs/utils/ft_strjoin.c \
@@ -52,6 +53,9 @@ $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
 $(NAME) : $(OBJS) ${FT_PRINTF}
+	$(CC) $(OBJS) $(CFLAGS) -o ${NAME} ${FT_PRINTF}
+
+bonus : $(OBJS) ${FT_PRINTF}
 	$(CC) $(OBJS) $(CFLAGS) -o ${NAME} ${FT_PRINTF}
 
 ${FT_PRINTF}:
