@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:00:28 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/02/14 16:53:45 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/02/15 11:57:20 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ int	main(int argc, char **argv, char **envp)
 	sep_path(&pipex, envp);
 	int i = 0;
 	pipex.i = -1;
+int j = pipex.pipe_counter ;
 	while (i < pipex.pipe_counter + 1)
 	{
 		++pipex.i;
@@ -67,20 +68,19 @@ int	main(int argc, char **argv, char **envp)
 		if (pipex.cpid == 0)
 		{
 			one(&pipex, envp, argv, argc);
-			exit (0);
+			//exit (0);
 		}
 		i++;
 	}
 	int test;
-int j = pipex.pipe_counter +1;
 	int status;
 	while (j > 0)
 	{
-		test = waitpid(-1, &status, WNOHANG);
+		test = waitpid(-1, &status, 0);
 		if (test == -1)
 		{
 			if (errno == EINTR)
-				continue;
+				continue ;
 			free_all(&pipex, -1);
 		}
 		if (test > 0)
