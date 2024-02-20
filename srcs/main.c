@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:00:28 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/02/20 11:47:51 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/02/20 12:00:07 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ void	one(t_pipex *pipex, char **envp, char **argv, int argc)
 		child_mid_cmd(pipex);
 	else
 		child_last_cmd(pipex, argv, argc);
-	v_error(pipex, execve(pipex->path_cmd, &pipex->cmd_split[0], envp), "execve :");
+	v_error(pipex, execve(pipex->path_cmd, &pipex->cmd_split[0], envp), "execve :", NULL);
 }
 
 int	main(int argc, char **argv, char **envp)
@@ -58,36 +58,25 @@ int	main(int argc, char **argv, char **envp)
 	init_value(&pipex, argv);
 	get_env(&pipex, envp);
 	sep_path(&pipex, envp);
-
-	// pipex.cpid = malloc(sizeof(pid_t) * (pipex.pipe_counter + 1));
-
 	int i = 0;
 	pipex.i = -1;
 int j = pipex.pipe_counter + 1;
 	while (i < pipex.pipe_counter + 1)
 	{
 		++pipex.i;
-		// pipex.cpid[i] = fork();
 		pipex.cpid= fork();
-
-		// if (pipex.cpid[i] == 0)
 		if (pipex.cpid == 0)
-		{
 			one(&pipex, envp, argv, argc);
-			//exit (0);
-		}
-        i++;
-    }
+			i++;
+	}
 	close(pipex.first_pipe[0]);
 	close(pipex.first_pipe[1]);
 	close(pipex.sec_pipe[0]);
 	close(pipex.sec_pipe[1]);
 	int test;
 	pid_t status;
-	// while (j >= 0)
 	while (j > 0)
 	{
-		// printf("%d\n", j);
 		test = waitpid(-1, &status, WNOHANG);
 		if (test == -1)
 		{
@@ -103,45 +92,5 @@ int j = pipex.pipe_counter + 1;
 			j--;
 		}
 	}
-
-	//     int num_processes = pipex.pipe_counter + 1;
-    // int test;
-    // int status;
-    // while (num_processes > 0) {
-    //     for (int j = 0; j < pipex.pipe_counter + 1; j++) {
-    //         test = waitpid(pipex.cpid[j], &status, WNOHANG);
-    //         if (test == -1) {
-    //             if (errno == EINTR)
-    //                 continue;
-    //             free_all(&pipex, -1);
-    //         }
-    //         if (test > 0) {
-    //             if (WIFEXITED(status))
-    //                 WEXITSTATUS(status);
-    //             num_processes--;
-    //         }
-    //     }
-    // }
-
-    // int status;
-    // pid_t pid;
-    // while ((pid = waitpid(-1, &status, 0)) > 0)
-    // {
-    //     // if (WIFEXITED(status))
-    //     // {
-    //     //     printf("Process with PID %d exited with status %d\n", pid, WEXITSTATUS(status));
-    //     // }
-    //     // else if (WIFSIGNALED(status))
-    //     // {
-    //     //     printf("Process with PID %d terminated by signal %d\n", pid, WTERMSIG(status));
-    //     // }
-    // }
-
-    // if (pid == -1 && errno != ECHILD)
-    // {
-    //     perror("waitpid failed");
-    //     free_all(&pipex, -1);
-    // }
-
 	return (0);
 }

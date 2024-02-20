@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 12:08:57 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/02/13 10:58:17 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/02/20 12:11:16 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,10 @@ char	*get_good_path(t_pipex *pipex, int i, char *tempo, char **cmd_split)
 			ret = NULL;
 		}
 		if ((i + 1) == pipex->path_counter)
+		{
+			v_error(pipex, -1, cmd_split[0], "command not found");
 			free_all(pipex, -1);
+		}
 		i++;
 	}
 	return (ret);
