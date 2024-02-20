@@ -6,7 +6,7 @@
 #    By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/22 10:57:44 by lbirloue          #+#    #+#              #
-#    Updated: 2024/02/14 15:17:57 by lbirloue         ###   ########.fr        #
+#    Updated: 2024/02/15 12:43:55 by lbirloue         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME			=	pipex
 
 CC				=	gcc
 
-CFLAGS			=	-Wall -Wextra -Werror
+CFLAGS			=	-Wall -Wextra #-Werror
 
 INCLUDES		=	includes/pipex.h
 
