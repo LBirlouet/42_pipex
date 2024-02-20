@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:01:16 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/02/14 16:29:46 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/02/20 09:21:17 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_pipex {
 	int			*pipe_verif;
 	int			i;
 	pid_t		cpid;
+	// pid_t		*cpid;
 }				t_pipex;
 
 int		main(int argc, char **argv, char **envp);

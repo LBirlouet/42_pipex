@@ -1,17 +1,12 @@
--rw-r--r--   1 lbirloue  2023_s19      0 Feb 20 07:46 test.txt
--rw-r--r--   1 lbirloue  2023_s19     69 Feb 15 11:02 test.c
-drwxr-xr-x   7 lbirloue  2023_s19    238 Feb 14 15:10 srcs
-drwxr-xr-x   3 lbirloue  2023_s19    102 Feb 12 10:10 pipex.dSYM
--rwxr-xr-x   1 lbirloue  2023_s19  50896 Feb 20 07:41 pipex
-drwxr-xr-x   3 lbirloue  2023_s19    102 Feb 20 07:41 objects
--rw-r--r--   1 lbirloue  2023_s19  12464 Feb 20 07:41 libftprintf.a
-drwxr-xr-x   3 lbirloue  2023_s19    102 Jan 22 11:01 includes
-drwxr-xr-x  22 lbirloue  2023_s19    748 Feb 20 07:41 ft_printf
--rwxr-xr-x   1 lbirloue  2023_s19  49424 Feb 15 11:02 a.out
-drwxr-xr-x   8 lbirloue  2023_s19    272 Feb 15 12:49 PIPEX_TESTER
--rw-r--r--   1 lbirloue  2023_s19   2074 Feb 15 12:43 Makefile
-drwxr-xr-x   3 lbirloue  2023_s19    102 Feb 14 16:02 .vscode
-drwxr-xr-x  14 lbirloue  2023_s19    476 Feb 15 12:49 .git
--rw-r--r--@  1 lbirloue  2023_s19   6148 Feb 15 11:09 .DS_Store
-drwxr-xr-x  67 lbirloue  2023_s19   2346 Feb 20 07:46 ..
-drwxr-xr-x  17 lbirloue  2023_s19    578 Feb 20 07:41 .
+Makefile
+PIPEX_TESTER
+a.out
+ft_printf
+includes
+libftprintf.a
+objects
+pipex
+pipex.dSYM
+srcs
+test.c
+test.txt

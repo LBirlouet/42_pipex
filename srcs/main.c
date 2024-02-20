@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:00:28 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/02/20 07:41:29 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/02/20 11:47:51 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,38 +58,70 @@ int	main(int argc, char **argv, char **envp)
 	init_value(&pipex, argv);
 	get_env(&pipex, envp);
 	sep_path(&pipex, envp);
+
+	// pipex.cpid = malloc(sizeof(pid_t) * (pipex.pipe_counter + 1));
+
 	int i = 0;
 	pipex.i = -1;
-int j = pipex.pipe_counter ;
+int j = pipex.pipe_counter + 1;
 	while (i < pipex.pipe_counter + 1)
 	{
 		++pipex.i;
-		pipex.cpid = fork();
+		// pipex.cpid[i] = fork();
+		pipex.cpid= fork();
+
+		// if (pipex.cpid[i] == 0)
 		if (pipex.cpid == 0)
 		{
 			one(&pipex, envp, argv, argc);
 			//exit (0);
 		}
-		i++;
-	}
+        i++;
+    }
+	close(pipex.first_pipe[0]);
+	close(pipex.first_pipe[1]);
+	close(pipex.sec_pipe[0]);
+	close(pipex.sec_pipe[1]);
 	int test;
-	int status;
+	pid_t status;
+	// while (j >= 0)
 	while (j > 0)
 	{
-		test = waitpid(-1, &status, 0);
+		// printf("%d\n", j);
+		test = waitpid(-1, &status, WNOHANG);
 		if (test == -1)
 		{
 			if (errno == EINTR)
 				continue ;
-			free_all(&pipex, -1);
+			else
+				free_all(&pipex, -1);
 		}
-		if (test > 0)
+		else if (test > 0)
 		{
 			if (WIFEXITED(status))
 				WEXITSTATUS(status);
 			j--;
 		}
 	}
+
+	//     int num_processes = pipex.pipe_counter + 1;
+    // int test;
+    // int status;
+    // while (num_processes > 0) {
+    //     for (int j = 0; j < pipex.pipe_counter + 1; j++) {
+    //         test = waitpid(pipex.cpid[j], &status, WNOHANG);
+    //         if (test == -1) {
+    //             if (errno == EINTR)
+    //                 continue;
+    //             free_all(&pipex, -1);
+    //         }
+    //         if (test > 0) {
+    //             if (WIFEXITED(status))
+    //                 WEXITSTATUS(status);
+    //             num_processes--;
+    //         }
+    //     }
+    // }
 
     // int status;
     // pid_t pid;
