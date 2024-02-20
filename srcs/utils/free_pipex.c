@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 14:47:59 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/02/20 12:07:25 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/02/20 12:38:27 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,24 +33,17 @@ void	free_all(t_pipex *pipex, int status)
 	int	i;
 
 	i = 0;
-	(void)pipex;
-	// while (pipex->cmd1_split && pipex->cmd1_split[i])
-	// 	free(pipex->cmd1_split[i++]);
-	// i = 0;
-	// while (pipex->cmd2_split && pipex->cmd2_split[i])
-	// 	free(pipex->cmd2_split[i++]);
-	// if (pipex->cmd1_split)
-	// 	free(pipex->cmd1_split);
-	// if (pipex->cmd2_split)
-	// 	free(pipex->cmd2_split);
-	// while (pipex->path_list && pipex->path_list[i])
-	// 	free(pipex->path_list[i++]);
-	// if (pipex->path_list)
-	// 	free(pipex->path_list);
-	// if (pipex->path_cmd1)
-	// 	free(pipex->path_cmd1);
-	// if (pipex->path_cmd2)
-	// 	free(pipex->path_cmd2);
+	while (pipex->cmd_split && pipex->cmd_split[i])
+		free(pipex->cmd_split[i++]);
+	i = 0;
+	if (pipex->cmd_split)
+		free(pipex->cmd_split);
+	while (pipex->path_list && pipex->path_list[i])
+		free(pipex->path_list[i++]);
+	if (pipex->path_list)
+		free(pipex->path_list);
+	if (pipex->path_cmd)
+		free(pipex->path_cmd);
 	if (status == -1)
 		exit(EXIT_FAILURE);
 	else if (status == 0)

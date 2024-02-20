@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:00:28 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/02/20 12:00:07 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/02/20 13:04:25 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,10 @@ int	init_value(t_pipex *pipex, char **argv)
 	return (0);
 }
 
-void	refresh_pipe(int fd[2])
+void	refresh_pipe(t_pipex *pipex, int fd[2])
 {
-	close(fd[0]);
-	close(fd[1]);
+	v_error(pipex, close(fd[0]), "close :", NULL);
+	v_error(pipex, close(fd[1]), "close :", NULL);
 	pipe(fd);
 	return ;
 }

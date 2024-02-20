@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:01:16 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/02/20 12:00:02 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/02/20 13:04:30 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,7 @@ size_t	ft_strlen(const char *str);
 void	child_first_cmd(t_pipex *pipex, char **argv);
 void	child_mid_cmd(t_pipex *pipex);
 void	child_last_cmd(t_pipex *pipex, char **argv, int argc);
-void	refresh_pipe(int fd[2]);
+void	refresh_pipe(t_pipex *pipex, int fd[2]);
 
 
 /*lst*/
