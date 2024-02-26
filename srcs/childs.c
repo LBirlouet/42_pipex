@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:10:16 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/02/20 14:47:52 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/02/26 09:56:50 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,15 @@ void	child_last_cmd(t_pipex *pipex, char **argv, int argc)
 {
 	v_error(pipex, close(pipex->first_pipe[1]), "close :", NULL);
 	v_error(pipex, close(pipex->sec_pipe[1]), "close :", NULL);
-	if ((pipex->i % 2) == 0)
+	if (((pipex->i % 2) == 0) || pipex->i == 1)
 	{
 	// printf("last child pair\n");
-		v_error(pipex, dup2(pipex->first_pipe[0], STDIN_FILENO), "dup2", NULL); //ou first_pipe[0] ou sec_pipe ?????????
+		v_error(pipex, dup2(pipex->first_pipe[0], STDIN_FILENO), "dup2", NULL);
 	}
 	else
 	{
 	// printf("last child impair\n");	
-		v_error(pipex, dup2(pipex->first_pipe[0], STDIN_FILENO), "dup2", NULL);
+		v_error(pipex, dup2(pipex->sec_pipe[0], STDIN_FILENO), "dup2", NULL); //ou first_pipe[0] ou sec_pipe ?????????
 	}
 	v_error(pipex, close(pipex->first_pipe[0]), "close :", NULL);
 	v_error(pipex, close(pipex->sec_pipe[0]), "close :", NULL);

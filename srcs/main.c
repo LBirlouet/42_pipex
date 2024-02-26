@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:00:28 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/02/20 13:04:25 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/02/26 09:53:34 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,8 +38,17 @@ void	one(t_pipex *pipex, char **envp, char **argv, int argc)
 	char *tempo;
 
 	tempo = NULL;
+	if (pipex->i == 0)
+	{
+		pipex->fd_input = open(argv[1], O_RDONLY | O_CLOEXEC);
+		if (pipex->fd_input == -1)
+		{
+			v_error(pipex, -1, argv[1], "No such file or directory");
+			free_all(pipex, -1);
+		}
+	}
 	pipex->cmd_split = ft_split(argv[pipex->i + 2], ' ');
-	pipex->path_cmd = get_good_path(pipex, 0, tempo, pipex->cmd_split);
+	pipex->path_cmd = get_good_path(pipex, 0, tempo, pipex->cmd_split, argv);
 	if (pipex->i == 0)
 		child_first_cmd(pipex, argv);
 	else if (pipex->i != pipex->pipe_counter)

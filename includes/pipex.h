@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:01:16 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/02/20 13:04:30 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/02/26 09:48:33 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	get_env(t_pipex *pipex, char **envp);
 void	sep_path(t_pipex *pipex, char **envp);
 void	join_path(t_pipex *pipex, char **argv);
 
-char	*get_good_path(t_pipex *pipex, int i, char *tempo, char **cmd_split);
+char	*get_good_path(t_pipex *pipex, int i, char *tempo, char **cmd_split, char **argv);
 
 void	v_error(t_pipex *pipex, int ret, char *err, char *err2);
 void	free_all(t_pipex *pipex, int status);
