@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:00:28 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/02/26 09:53:34 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/02/26 10:57:42 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 int	init_value(t_pipex *pipex, char **argv)
 {
 	(void)argv;
+	pipex->exit_s = 0;
 	pipex->cmd_counter = pipex->argc - 3;
 	pipex->pipe_counter = pipex->cmd_counter - 1;
 	pipex->path_list = NULL;
@@ -83,6 +84,7 @@ int j = pipex.pipe_counter + 1;
 	close(pipex.sec_pipe[0]);
 	close(pipex.sec_pipe[1]);
 	int test;
+	int ret_status;
 	pid_t status;
 	while (j > 0)
 	{
@@ -97,9 +99,10 @@ int j = pipex.pipe_counter + 1;
 		else if (test > 0)
 		{
 			if (WIFEXITED(status))
-				WEXITSTATUS(status);
+				ret_status = WEXITSTATUS(status);
 			j--;
 		}
 	}
-	return (0);
+	if (ret_status != 0)
+		exit (ret_status);
 }

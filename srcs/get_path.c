@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/25 12:08:57 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/02/26 09:59:08 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/02/26 10:18:22 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,13 +84,13 @@ char	*get_good_path(t_pipex *pipex, int i, char *tempo, char **cmd_split, char *
 		}
 		if ((i + 1) == pipex->path_counter)
 		{
-			(void)argv;
-			// if (pipex->i == (pipex->argc - 4))
-			// {
-			// 	pipex->fd_output = open(argv[pipex->argc - 1],
-			// 			O_WRONLY | O_TRUNC | O_CLOEXEC | O_CREAT, 0644);
-			// }
-			v_error(pipex, -1, cmd_split[0], "command not found");
+			if (pipex->i == (pipex->argc - 4))
+			{
+				pipex->fd_output = open(argv[pipex->argc - 1],
+						O_WRONLY | O_TRUNC | O_CLOEXEC | O_CREAT, 0644);
+			}
+			pipex->exit_s = 127;
+			v_error(pipex, 127, cmd_split[0], "command not found");
 			free_all(pipex, -1);
 		}
 		i++;

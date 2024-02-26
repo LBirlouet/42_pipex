@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 14:47:59 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/02/20 12:38:27 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/02/26 10:17:22 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	v_error(t_pipex *pipex, int ret, char *err, char *err2)
 {
-	if (ret == -1)
+	if (ret == -1 || ret == 127)
 	{
 		write(2,"pipex: ", 7);
 		if (err)
@@ -23,7 +23,7 @@ void	v_error(t_pipex *pipex, int ret, char *err, char *err2)
 			write(2,": ", 2);
 			write(2, err2, ft_strlen(err2));
 		write (2, "\n", 1);
-		free_all(pipex, -1);
+		free_all(pipex, ret);
 	}
 	return ;
 }
@@ -33,6 +33,7 @@ void	free_all(t_pipex *pipex, int status)
 	int	i;
 
 	i = 0;
+	// printf("Status == %d\n", status);
 	while (pipex->cmd_split && pipex->cmd_split[i])
 		free(pipex->cmd_split[i++]);
 	i = 0;
@@ -48,4 +49,5 @@ void	free_all(t_pipex *pipex, int status)
 		exit(EXIT_FAILURE);
 	else if (status == 0)
 		exit (EXIT_SUCCESS);
+	exit(status);
 }

@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:01:16 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/02/26 09:48:33 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/02/26 10:18:50 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 
 typedef struct s_pipex {
 	int			envline;
+	int			exit_s;
 	char		*path_cmd;
 	char		**cmd_split;
 	char		**path_list;
