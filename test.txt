@@ -1,0 +1,15 @@
+					srcs/utils/ft_split.c \
+					srcs/utils/ft_substr.c \
+					srcs/utils/ft_strjoin.c \
+					srcs/utils/ft_strlen.c \
+					srcs/utils/free_pipex.c \
+					# srcs/utils/ft_lstadd_back.c \
+					# srcs/utils/ft_lstclear.c \
+					# srcs/utils/ft_lstdelone.c \
+					# srcs/utils/ft_lstnew.c
+-rw-r--r--   1 lbirloue  2023_s19  1320 Jan 22 10:58 utils_ft_printf.c
+-rw-r--r--   1 lbirloue  2023_s19  1316 Feb 27 07:46 utils_ft_printf.o
+drwxr-xr-x  7 lbirloue  2023_s19   238 Feb 27 07:46 utils
+./objects/srcs/utils:
+drwxr-xr-x  11 lbirloue  2023_s19   374 Feb  9 12:08 utils
+./srcs/utils:
