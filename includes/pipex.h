@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:01:16 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/02/26 10:18:50 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/02/27 11:58:12 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,10 +36,9 @@ typedef struct s_pipex {
 	int			argc;
 	int			fd_output;
 	int			fd_input;
-	int			*pipe;
-	int			first_pipe[2];
-	int			sec_pipe[2];
-	
+	int			prev_pipe;
+	int			pipe_fds[2];
+
 	int			*pipe_verif;
 	int			i;
 	pid_t		cpid;
@@ -55,7 +54,7 @@ void	sep_path(t_pipex *pipex, char **envp);
 void	join_path(t_pipex *pipex, char **argv);
 
 char	*get_good_path(t_pipex *pipex, int i, char *tempo, char **cmd_split, char **argv);
-
+void	one(t_pipex *pipex, char **envp, char **argv);
 void	v_error(t_pipex *pipex, int ret, char *err, char *err2);
 void	free_all(t_pipex *pipex, int status);
 
@@ -65,9 +64,9 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
 size_t	ft_strlen(const char *str);
 
-void	child_first_cmd(t_pipex *pipex, char **argv);
+void	child_first_cmd(t_pipex *pipex, char **argv, char **envp, char *tempo);
 void	child_mid_cmd(t_pipex *pipex);
-void	child_last_cmd(t_pipex *pipex, char **argv, int argc);
+void	child_last_cmd(t_pipex *pipex, char **argv, char **envp, char *tempo);
 void	refresh_pipe(t_pipex *pipex, int fd[2]);
 
 
