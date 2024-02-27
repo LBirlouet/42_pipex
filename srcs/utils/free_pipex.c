@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 14:47:59 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/02/26 10:17:22 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/02/27 12:26:14 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	v_error(t_pipex *pipex, int ret, char *err, char *err2)
 {
-	if (ret == -1 || ret == 127)
+	if (ret == -1 || ret == -2 || ret == 127)
 	{
 		write(2,"pipex: ", 7);
 		if (err)
@@ -23,7 +23,8 @@ void	v_error(t_pipex *pipex, int ret, char *err, char *err2)
 			write(2,": ", 2);
 			write(2, err2, ft_strlen(err2));
 		write (2, "\n", 1);
-		free_all(pipex, ret);
+		if (ret != -2)
+			free_all(pipex, ret);
 	}
 	return ;
 }

@@ -1,0 +1,13 @@
+Makefile
+PIPEX_TESTER
+a.out
+ft_printf
+includes
+libftprintf.a
+objects
+outfile
+outfle
+pipex
+pipex-tester
+srcs
+test.txt

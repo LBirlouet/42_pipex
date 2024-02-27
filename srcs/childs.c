@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:10:16 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/02/27 11:58:55 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/02/27 12:58:35 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void	child_first_cmd(t_pipex *pipex, char **argv, char **envp, char *tempo)
 {
-	pid_t	pid;
-
+	pipe(pipex->pipe_fds);
+	pipex->pid = fork();
+	if (pipex->i == 0 && pipex->f_cmd_status == -1)
+		return;
+	if (pipex->pid == 0)
+	{
 	pipex->cmd_split = ft_split(argv[pipex->i + 2], ' ');
 	pipex->path_cmd = get_good_path(pipex, 0, tempo, pipex->cmd_split, argv);
-	pipe(pipex->pipe_fds);
-	pid = fork();
-	if (pid == 0)
-	{
 		v_error(pipex, dup2(pipex->prev_pipe, STDIN_FILENO), "uiski", NULL);
 		v_error(pipex, dup2(pipex->pipe_fds[1], STDOUT_FILENO), "dup2", NULL);
 		v_error(pipex, execve(pipex->path_cmd, &pipex->cmd_split[0], envp),
@@ -31,7 +31,6 @@ void	child_first_cmd(t_pipex *pipex, char **argv, char **envp, char *tempo)
 	else
 	{
 		pipex->prev_pipe = pipex->pipe_fds[0];
-		waitpid(-1, &pid, WNOHANG);
 		v_error(pipex, close(pipex->pipe_fds[1]), "close :", NULL);
 	}
 	return ;
@@ -59,7 +58,10 @@ void	child_last_cmd(t_pipex *pipex, char **argv, char **envp, char *tempo)
 			"execve :", NULL);
 		pipex->fd_output = -1;
 	}
+	else
 		waitpid(-1, &pid, WNOHANG);
+	v_error(pipex, close(pipex->pipe_fds[1]), "close :", NULL);
+	v_error(pipex, close(pipex->prev_pipe), "close :", NULL);
 
 	return ;
 }
