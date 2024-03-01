@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:00:28 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/03/01 14:56:17 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/03/01 15:30:49 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void	one(t_pipex *pipex, char **envp, char **argv)
 	}
 	if (pipex->i == pipex->pipe_counter)
 		child_last_cmd(pipex, argv, envp);
-	free_all(pipex, 2);
+	free_all(pipex, 1);
 	wpid(pipex, i);
 }
 

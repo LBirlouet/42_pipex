@@ -6,11 +6,15 @@
 #    By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/22 10:57:44 by lbirloue          #+#    #+#              #
-#    Updated: 2024/03/01 15:15:07 by lbirloue         ###   ########.fr        #
+#    Updated: 2024/03/01 15:26:07 by lbirloue         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
+# *********************************** NAME *********************************** #
+
 NAME			=	pipex
+
+
 
 CC				=	gcc
 
@@ -20,19 +24,23 @@ INCLUDES		=	includes/pipex.h
 
 INCLUDES_BONUS	=	includes_bonus/pipex_bonus.h
 
-
 SRCS			=	srcs/main.c \
 					srcs/get_path.c \
 					srcs/childs.c \
 					srcs/free_pipex.c \
 
+# SRCS_BONUS		=	srcs_bonus/main.c \
+# 					srcs_bonus/get_path.c \
+# 					srcs_bonus/childs.c \
+# 					srcs_bonus/free_pipex.c \
+
 FT_PRINTF		=	libftprintf.a
 
 FT_PRINTF_PATH	=	ft_printf
 
-LIBFT		=	libft.a
+LIBFT			=	libft.a
 
-LIBFT_PATH	=	libft
+LIBFT_PATH		=	libft
 
 OBJ_DIR			=	objects
 
@@ -67,7 +75,7 @@ ${FT_PRINTF}:
 ${LIBFT}:
 	@${MAKE} -C ${LIBFT_PATH} > /dev/null 2>&1
 	@mv ${LIBFT_PATH}/${LIBFT} .
-	@printf "${GREEN}libftprintf compiled${NC}\n" || (printf "${RED}libftprintf error${NC}\n" && exit 1)
+#	@printf "${GREEN}libftprintf compiled${NC}\n" || (printf "${RED}libftprintf error${NC}\n" && exit 1)
 
 clean:
 	@rm -rf $(OBJ_DIR)  > /dev/null 2>&1
