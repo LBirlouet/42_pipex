@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:01:16 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/02/27 12:26:36 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/03/01 11:22:53 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ typedef struct s_pipex {
 }				t_pipex;
 
 int		main(int argc, char **argv, char **envp);
-void	parsing(t_pipex *pipex);
 int		init_value(t_pipex *pipex, char **argv);
 void	get_path(t_pipex *pipex, char **envp);
 void	get_env(t_pipex *pipex, char **envp);
@@ -65,18 +64,8 @@ char	*ft_substr(char const *s, unsigned int start, size_t len);
 char	*ft_strjoin(char const *s1, char const *s2);
 size_t	ft_strlen(const char *str);
 
-void	child_first_cmd(t_pipex *pipex, char **argv, char **envp, char *tempo);
-void	child_mid_cmd(t_pipex *pipex);
+void	child_cmd(t_pipex *pipex, char **argv, char **envp, char *tempo);
 void	child_last_cmd(t_pipex *pipex, char **argv, char **envp, char *tempo);
-void	refresh_pipe(t_pipex *pipex, int fd[2]);
-
-
-/*lst*/
-// void	ft_lstdelone(t_cmd *cmd, void (*del)(void *));
-// void	ft_lstclear(t_cmd **lst, void (*del)(void *));
-// void	ft_lstadd_back(t_cmd **lst, t_cmd *new);
-// t_cmd	*ft_lstnew(void *content);
-
-
+void	wpid(t_pipex *pipex, int i);
 
 #endif

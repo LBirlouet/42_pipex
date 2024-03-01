@@ -6,13 +6,13 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:10:16 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/03/01 09:58:12 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/03/01 11:18:03 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/pipex.h"
 
-void	child_first_cmd(t_pipex *pipex, char **argv, char **envp, char *tempo)
+void	child_cmd(t_pipex *pipex, char **argv, char **envp, char *tempo)
 {
 	pipe(pipex->pipe_fds);
 	pipex->pid = fork();
@@ -20,7 +20,6 @@ void	child_first_cmd(t_pipex *pipex, char **argv, char **envp, char *tempo)
 		return;
 	if (pipex->pid == 0)
 	{
-		
 		if (pipex->i == 0)
 		{
 			pipex->fd_input = open(argv[1], O_RDONLY | O_CLOEXEC);
@@ -72,10 +71,38 @@ void	child_last_cmd(t_pipex *pipex, char **argv, char **envp, char *tempo)
 			"execve :", NULL);
 		pipex->fd_output = -1;
 	}
-	else
-		waitpid(-1, &pid, WNOHANG);
+	// else
+	// 	waitpid(-1, &pid, WNOHANG);
 	v_error(pipex, close(pipex->pipe_fds[1]), "close :", NULL);
 	v_error(pipex, close(pipex->prev_pipe), "close :", NULL);
 
 	return ;
+}
+
+void	wpid(t_pipex *pipex, int i)
+{
+	int	status;
+	int	ret_pid;
+	int	exit_status;
+
+	while (i > 0)
+	{
+		ret_pid = waitpid(-1, &status, 0);
+		if (ret_pid == -1)
+		{
+			if (errno == EINTR)
+				continue ;
+			else
+			{
+				v_error(pipex, -1, "waitpid", NULL);
+			}
+		}
+		else if (ret_pid > 0)
+		{
+			if (WIFEXITED(status))
+				exit_status = WEXITSTATUS(status);
+			i--;
+		}
+	}
+	exit (exit_status);
 }

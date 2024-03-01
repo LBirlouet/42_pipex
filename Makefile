@@ -6,7 +6,7 @@
 #    By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/22 10:57:44 by lbirloue          #+#    #+#              #
-#    Updated: 2024/02/15 12:43:55 by lbirloue         ###   ########.fr        #
+#    Updated: 2024/03/01 11:22:56 by lbirloue         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,6 @@ INCLUDES_BONUS	=	includes_bonus/pipex_bonus.h
 
 
 SRCS			=	srcs/main.c \
-					srcs/parsing.c \
 					srcs/get_path.c \
 					srcs/childs.c \
 					srcs/utils/ft_split.c \
