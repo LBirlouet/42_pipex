@@ -1,9 +1,0 @@
-					srcs/utils/ft_split.c \
-					srcs/utils/ft_substr.c \
-					srcs/utils/ft_strjoin.c \
-					srcs/utils/ft_strlen.c \
-					srcs/utils/free_pipex.c \
-					# srcs/utils/ft_lstadd_back.c \
-					# srcs/utils/ft_lstclear.c \
-					# srcs/utils/ft_lstdelone.c \
-					# srcs/utils/ft_lstnew.c

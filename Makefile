@@ -6,7 +6,7 @@
 #    By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/22 10:57:44 by lbirloue          #+#    #+#              #
-#    Updated: 2024/03/01 11:22:56 by lbirloue         ###   ########.fr        #
+#    Updated: 2024/03/01 13:10:27 by lbirloue         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -38,6 +38,10 @@ FT_PRINTF		=	libftprintf.a
 
 FT_PRINTF_PATH	=	ft_printf
 
+LIBFT		=	libft.a
+
+LIBFT_PATH	=	libft
+
 OBJ_DIR			=	objects
 
 OBJS			=	$(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))
@@ -51,20 +55,26 @@ all : $(OBJ_DIR) $(NAME)
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
-$(NAME) : $(OBJS) ${FT_PRINTF}
-	$(CC) $(OBJS) $(CFLAGS) -o ${NAME} ${FT_PRINTF}
+$(NAME) : $(OBJS) ${FT_PRINTF} ${LIBFT}
+	$(CC) $(OBJS) $(CFLAGS) -o ${NAME} ${FT_PRINTF} ${LIBFT}
 
-bonus : $(OBJS) ${FT_PRINTF}
-	$(CC) $(OBJS) $(CFLAGS) -o ${NAME} ${FT_PRINTF}
+bonus : $(OBJS) ${FT_PRINTF} ${LIBFT}
+	$(CC) $(OBJS) $(CFLAGS) -o ${NAME} ${FT_PRINTF} ${LIBFT}
 
 ${FT_PRINTF}:
 	${MAKE} -C ${FT_PRINTF_PATH} 
 	mv ${FT_PRINTF_PATH}/${FT_PRINTF} .
 
+${LIBFT}:
+	${MAKE} -C ${LIBFT_PATH} 
+	mv ${LIBFT_PATH}/${LIBFT} .
+
 clean:
 	rm -rf $(OBJ_DIR) 
-	${MAKE} clean -C ${FT_PRINTF_PATH} 
-	${RM} ${FT_PRINTF} 
+	${MAKE} clean -C ${FT_PRINTF_PATH}
+	${MAKE} clean -C ${LIBFT_PATH}
+	${RM} ${FT_PRINTF}
+	${RM} ${LIBFT}
 
 fclean: clean
 	rm -rf $(NAME) 

@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:01:16 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/03/01 13:01:27 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/03/01 13:13:19 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <errno.h>
 # include <fcntl.h>
 # include "../ft_printf/ft_printf.h"
+# include "../libft/libft.h"
 # include <stdio.h>
 
 typedef struct s_pipex {
@@ -42,7 +43,6 @@ typedef struct s_pipex {
 	int			i;
 	pid_t		cpid;
 	pid_t		pid;
-	// pid_t		*cpid;
 }				t_pipex;
 
 int		main(int argc, char **argv, char **envp);
@@ -60,11 +60,6 @@ void	one(t_pipex *pipex, char **envp, char **argv);
 void	v_error(t_pipex *pipex, int ret, char *err, char *err2);
 void	free_all(t_pipex *pipex, int status);
 void	first_cmd(t_pipex *pipex, char **av);
-
-char	**ft_split(char const *s, char c);
-char	*ft_substr(char const *s, unsigned int start, size_t len);
-char	*ft_strjoin(char const *s1, char const *s2);
-size_t	ft_strlen(const char *str);
 
 void	child_cmd(t_pipex *pipex, char **argv, char **envp);
 void	child_last_cmd(t_pipex *pipex, char **argv, char **envp);
