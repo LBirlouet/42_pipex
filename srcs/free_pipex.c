@@ -6,11 +6,11 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 14:47:59 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/03/01 12:02:24 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/03/01 14:36:35 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../../includes/pipex.h"
+#include "../includes/pipex.h"
 
 void	v_error(t_pipex *pipex, int ret, char *err, char *err2)
 {
@@ -47,6 +47,8 @@ void	free_all(t_pipex *pipex, int status)
 		free(pipex->path_list);
 	if (pipex->path_cmd)
 		free(pipex->path_cmd);
+	if (status == 1)
+		return ;
 	if (status == -1)
 		exit(EXIT_FAILURE);
 	else if (status == 0)

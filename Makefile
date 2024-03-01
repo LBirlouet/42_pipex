@@ -6,7 +6,7 @@
 #    By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/22 10:57:44 by lbirloue          #+#    #+#              #
-#    Updated: 2024/03/01 13:59:32 by lbirloue         ###   ########.fr        #
+#    Updated: 2024/03/01 14:33:08 by lbirloue         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,15 +24,7 @@ INCLUDES_BONUS	=	includes_bonus/pipex_bonus.h
 SRCS			=	srcs/main.c \
 					srcs/get_path.c \
 					srcs/childs.c \
-					srcs/utils/ft_split.c \
-					srcs/utils/ft_substr.c \
-					srcs/utils/ft_strjoin.c \
-					srcs/utils/ft_strlen.c \
-					srcs/utils/free_pipex.c \
-					# srcs/utils/ft_lstadd_back.c \
-					# srcs/utils/ft_lstclear.c \
-					# srcs/utils/ft_lstdelone.c \
-					# srcs/utils/ft_lstnew.c
+					srcs/free_pipex.c \
 
 FT_PRINTF		=	libftprintf.a
 
@@ -61,20 +53,21 @@ $(OBJ_DIR):
 
 $(NAME) : $(OBJS) ${FT_PRINTF} ${LIBFT}
 	@$(CC) $(OBJS) $(CFLAGS) -o ${NAME} ${FT_PRINTF} ${LIBFT} > /dev/null 2>&1 
-	@printf "${GREEN}$(NAME) compiled${NC}\n"
+	@printf "${GREEN}$(NAME) compiled${NC}\n" || (printf "${RED}$(NAME) error${NC}\n" && exit 1)
 
 bonus : $(OBJS) ${FT_PRINTF} ${LIBFT}
 	@$(CC) $(OBJS) $(CFLAGS) -o ${NAME} ${FT_PRINTF} ${LIBFT} > /dev/null 2>&1
+	@printf "${GREEN}$(NAME) bonus compiled${NC}\n" || (printf "${RED}$(NAME) bonus error${NC}\n" && exit 1)
 
 ${FT_PRINTF}:
 	@${MAKE} -C ${FT_PRINTF_PATH} > /dev/null 2>&1
 	@mv ${FT_PRINTF_PATH}/${FT_PRINTF} .
-	@printf "${GREEN}libft compiled\033[0m\n" || (printf "${RED}libft error${NC}\n" && exit 1)
+	@printf "${GREEN}libft compiled${NC}\n" || (printf "${RED}libft error${NC}\n" && exit 1)
 
 ${LIBFT}:
 	@${MAKE} -C ${LIBFT_PATH} > /dev/null 2>&1
 	@mv ${LIBFT_PATH}/${LIBFT} .
-	@printf "${GREEN}libftprintf compiled\033[0m\n" || (printf "${RED}libft error${NC}\n" && exit 1)
+	@printf "${GREEN}libftprintf compiled${NC}\n" || (printf "${RED}libftprintf error${NC}\n" && exit 1)
 
 clean:
 	@rm -rf $(OBJ_DIR)  > /dev/null 2>&1
@@ -82,11 +75,11 @@ clean:
 	@${MAKE} clean -C ${LIBFT_PATH} > /dev/null 2>&1
 	@${RM} ${FT_PRINTF} > /dev/null 2>&1
 	@${RM} ${LIBFT} > /dev/null 2>&1
-	@printf "${RED}clean\033[0m\n"
+	@printf "${RED}all cleaned${NC}\n"
 
 fclean: clean
 	@rm -rf $(NAME)
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all bonus clean fclean re

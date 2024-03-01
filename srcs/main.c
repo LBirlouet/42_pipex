@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:00:28 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/03/01 12:52:52 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/03/01 14:41:02 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ int	init_value(t_pipex *pipex)
 
 void	one(t_pipex *pipex, char **envp, char **argv)
 {
-	int		i;
+	int	i;
 
 	i = pipex->pipe_counter + 1;
 	while (pipex->i < pipex->pipe_counter)
@@ -38,6 +38,7 @@ void	one(t_pipex *pipex, char **envp, char **argv)
 	}
 	if (pipex->i == pipex->pipe_counter)
 		child_last_cmd(pipex, argv, envp);
+	free_all(pipex, 2);
 	wpid(pipex, i);
 }
 
