@@ -1,5 +1,4 @@
 Makefile
-PIPEX_TESTER
 ft_printf
 includes
 libft

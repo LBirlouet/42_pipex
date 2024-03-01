@@ -6,7 +6,7 @@
 #    By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/22 10:57:44 by lbirloue          #+#    #+#              #
-#    Updated: 2024/03/01 14:33:08 by lbirloue         ###   ########.fr        #
+#    Updated: 2024/03/01 15:15:07 by lbirloue         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME			=	pipex
 
 CC				=	gcc
 
-CFLAGS			=	-Wall -Wextra #-Werror
+CFLAGS			=	-Wall -Wextra -Werror
 
 INCLUDES		=	includes/pipex.h
 
@@ -52,7 +52,7 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
 $(NAME) : $(OBJS) ${FT_PRINTF} ${LIBFT}
-	@$(CC) $(OBJS) $(CFLAGS) -o ${NAME} ${FT_PRINTF} ${LIBFT} > /dev/null 2>&1 
+	@$(CC) $(OBJS) $(CFLAGS) -o ${NAME} ${FT_PRINTF} ${LIBFT} -g > /dev/null 2>&1 
 	@printf "${GREEN}$(NAME) compiled${NC}\n" || (printf "${RED}$(NAME) error${NC}\n" && exit 1)
 
 bonus : $(OBJS) ${FT_PRINTF} ${LIBFT}

@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:10:16 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/03/01 13:01:14 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/03/01 15:01:50 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,8 +14,10 @@
 
 void	child_cmd(t_pipex *pipex, char **av, char **envp)
 {
-	pipe(pipex->pipe_fds);
+	v_error(pipex, pipe(pipex->pipe_fds), "pipe", NULL);
 	pipex->pid = fork();
+	if (pipex->pid == -1)
+		v_error(pipex, -1, "fork", NULL);
 	if (pipex->i == 0 && pipex->f_cmd_status == -1)
 		return ;
 	if (pipex->pid == 0)
@@ -43,6 +45,8 @@ void	child_last_cmd(t_pipex *pipex, char **argv, char **envp)
 	pid_t	pid;
 
 	pid = fork();
+	if (pipex->pid == -1)
+		v_error(pipex, -1, "fork error", NULL);
 	pipex->fd_output = open(argv[pipex->argc - 1],
 			O_CREAT | O_RDWR | O_TRUNC | O_CLOEXEC, 0644);
 	if (pipex->fd_output == -1)
