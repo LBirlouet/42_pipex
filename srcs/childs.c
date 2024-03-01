@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:10:16 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/02/27 12:58:35 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/03/01 09:58:12 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,20 @@ void	child_first_cmd(t_pipex *pipex, char **argv, char **envp, char *tempo)
 		return;
 	if (pipex->pid == 0)
 	{
+		
+		if (pipex->i == 0)
+		{
+			pipex->fd_input = open(argv[1], O_RDONLY | O_CLOEXEC);
+			if (pipex->fd_input == -1)
+			{
+				v_error(pipex, -2, argv[1], "No such file or directory");
+				pipex->f_cmd_status = -1;
+				exit(1);
+			}
+			if (pipex->f_cmd_status != -1)
+				v_error(pipex, dup2(pipex->fd_input, STDIN_FILENO), "dup2", NULL);
+		}
+		
 	pipex->cmd_split = ft_split(argv[pipex->i + 2], ' ');
 	pipex->path_cmd = get_good_path(pipex, 0, tempo, pipex->cmd_split, argv);
 		v_error(pipex, dup2(pipex->prev_pipe, STDIN_FILENO), "uiski", NULL);
@@ -40,6 +54,7 @@ void	child_last_cmd(t_pipex *pipex, char **argv, char **envp, char *tempo)
 {
 	pid_t	pid;
 
+	pid = fork();
 	pipex->cmd_split = ft_split(argv[pipex->i + 2], ' ');
 	pipex->path_cmd = get_good_path(pipex, 0, tempo, pipex->cmd_split, argv);
 	pipex->fd_output = open(argv[pipex->argc - 1],
@@ -49,7 +64,6 @@ void	child_last_cmd(t_pipex *pipex, char **argv, char **envp, char *tempo)
 		v_error(pipex, -1, argv[1], "No such file or directory");
 		free_all(pipex, -1);
 	}
-	pid = fork();
 	if (pid == 0)
 	{
 		v_error(pipex, dup2(pipex->prev_pipe, STDIN_FILENO), "dup2", NULL);

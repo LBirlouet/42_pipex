@@ -6,8 +6,6 @@ includes
 libftprintf.a
 objects
 outfile
-outfle
 pipex
-pipex-tester
 srcs
 test.txt

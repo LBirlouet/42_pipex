@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:00:28 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/02/27 13:26:51 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/03/01 10:02:12 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,26 +45,28 @@ int status;
 	int i = pipex->pipe_counter;
 
 	tempo = NULL;
-	if (pipex->i == 0)
-	{
-		pipex->fd_input = open(argv[1], O_RDONLY | O_CLOEXEC);
-		if (pipex->fd_input == -1)
-		{
-			v_error(pipex, -2, argv[1], "No such file or directory");
-			pipex->f_cmd_status = -1;
-		}
-	if (pipex->f_cmd_status != -1)
-		v_error(pipex, dup2(pipex->fd_input, STDIN_FILENO), "dup2", NULL);
-	}
+	// if (pipex->i == 0)
+	// {
+	// 	pipex->fd_input = open(argv[1], O_RDONLY | O_CLOEXEC);
+	// 	if (pipex->fd_input == -1)
+	// 	{
+	// 		v_error(pipex, -2, argv[1], "No such file or directory");
+	// 		pipex->f_cmd_status = -1;
+			
+	// 	}
+	// if (pipex->f_cmd_status != -1)
+	// 	v_error(pipex, dup2(pipex->fd_input, STDIN_FILENO), "dup2", NULL);
+	// }
 	while (pipex->i < pipex->pipe_counter)
 	{
 		child_first_cmd(pipex, argv, envp, tempo);
 		pipex->i++;
 	}
-	child_last_cmd(pipex, argv, envp, tempo);
+	if (pipex->i == pipex->pipe_counter)
+		child_last_cmd(pipex, argv, envp, tempo);
 	while (i > 0)
 	{
-		ret_pid = waitpid(-1, &status, WNOHANG);
+		ret_pid = waitpid(-1, &status, 0);
 		if (ret_pid == -1)
 		{
 			if (errno == EINTR)
@@ -78,8 +80,6 @@ int status;
 				exit_status = WEXITSTATUS(status);
 		}
 			i--;
-		
-		printf("bcl ?\n");
 	}
 	exit (exit_status);
 }
