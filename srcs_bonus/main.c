@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/22 11:00:28 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/03/05 08:38:24 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/03/05 08:38:39 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,6 @@ int	main(int argc, char **argv, char **envp)
 	pipex.argc = argc;
 	if (argc < 5)
 		v_error(&pipex, -1, "not enough arguments", NULL);
-	if (argc > 5)
-		v_error(&pipex, -1, "too much arguments for mandatory part", NULL);
 	init_value(&pipex);
 	get_env(&pipex, envp);
 	sep_path(&pipex, envp);
