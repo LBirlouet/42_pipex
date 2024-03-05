@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/01/23 14:47:59 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/03/01 14:36:35 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/03/05 13:03:41 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,16 @@ void	free_all(t_pipex *pipex, int status)
 		free(pipex->cmd_split[i++]);
 	if (pipex->cmd_split)
 		free(pipex->cmd_split);
+	pipex->cmd_split = NULL;
 	i = 0;
 	while (pipex->path_list && pipex->path_list[i])
 		free(pipex->path_list[i++]);
 	if (pipex->path_list)
 		free(pipex->path_list);
+	pipex->path_list = NULL;
 	if (pipex->path_cmd)
 		free(pipex->path_cmd);
+	pipex->path_cmd = NULL;
 	if (status == 1)
 		return ;
 	if (status == -1)

@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:10:16 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/03/01 15:01:50 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/03/05 13:13:13 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,14 @@ void	child_cmd(t_pipex *pipex, char **av, char **envp)
 	}
 	else
 	{
+		int i = 0;
+		while (pipex->cmd_split && pipex->cmd_split[i])
+			free(pipex->cmd_split[i++]);
+		if (pipex->cmd_split)
+			free(pipex->cmd_split);
+		pipex->cmd_split = NULL;
+	
+	
 		pipex->prev_pipe = pipex->pipe_fds[0];
 		v_error(pipex, close(pipex->pipe_fds[1]), "close :", NULL);
 	}
@@ -50,10 +58,7 @@ void	child_last_cmd(t_pipex *pipex, char **argv, char **envp)
 	pipex->fd_output = open(argv[pipex->argc - 1],
 			O_CREAT | O_RDWR | O_TRUNC | O_CLOEXEC, 0644);
 	if (pipex->fd_output == -1)
-	{
 		v_error(pipex, -1, argv[1], "open");
-		free_all(pipex, -1);
-	}
 	if (pid == 0)
 	{
 		pipex->cmd_split = ft_split(argv[pipex->i + 2], ' ');
