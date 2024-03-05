@@ -6,7 +6,7 @@
 #    By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/01/22 10:57:44 by lbirloue          #+#    #+#              #
-#    Updated: 2024/03/01 15:26:07 by lbirloue         ###   ########.fr        #
+#    Updated: 2024/03/05 07:42:51 by lbirloue         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,7 +75,7 @@ ${FT_PRINTF}:
 ${LIBFT}:
 	@${MAKE} -C ${LIBFT_PATH} > /dev/null 2>&1
 	@mv ${LIBFT_PATH}/${LIBFT} .
-#	@printf "${GREEN}libftprintf compiled${NC}\n" || (printf "${RED}libftprintf error${NC}\n" && exit 1)
+	@printf "${GREEN}libftprintf compiled${NC}\n" || (printf "${RED}libftprintf error${NC}\n" && exit 1)
 
 clean:
 	@rm -rf $(OBJ_DIR)  > /dev/null 2>&1
