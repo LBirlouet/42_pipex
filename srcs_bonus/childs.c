@@ -6,7 +6,7 @@
 /*   By: lbirloue <lbirloue@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 15:10:16 by lbirloue          #+#    #+#             */
-/*   Updated: 2024/03/05 13:13:13 by lbirloue         ###   ########.fr       */
+/*   Updated: 2024/03/06 10:20:02 by lbirloue         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,22 +26,15 @@ void	child_cmd(t_pipex *pipex, char **av, char **envp)
 			first_cmd(pipex, av);
 		pipex->cmd_split = ft_split(av[pipex->i + 2], ' ');
 		pipex->path_cmd = get_good_path(pipex, 0, pipex->cmd_split, av);
-		v_error(pipex, dup2(pipex->prev_pipe, STDIN_FILENO), "uiski", NULL);
+		v_error(pipex, dup2(pipex->prev_pipe, STDIN_FILENO), "dup2", NULL);
 		v_error(pipex, dup2(pipex->pipe_fds[1], STDOUT_FILENO), "dup2", NULL);
+		close(pipex->pipe_fds[0]);
 		v_error(pipex, execve(pipex->path_cmd, &pipex->cmd_split[0], envp),
 			"execve :", NULL);
 		pipex->fd_input = -1;
 	}
 	else
 	{
-		int i = 0;
-		while (pipex->cmd_split && pipex->cmd_split[i])
-			free(pipex->cmd_split[i++]);
-		if (pipex->cmd_split)
-			free(pipex->cmd_split);
-		pipex->cmd_split = NULL;
-	
-	
 		pipex->prev_pipe = pipex->pipe_fds[0];
 		v_error(pipex, close(pipex->pipe_fds[1]), "close :", NULL);
 	}
@@ -64,7 +57,9 @@ void	child_last_cmd(t_pipex *pipex, char **argv, char **envp)
 		pipex->cmd_split = ft_split(argv[pipex->i + 2], ' ');
 		pipex->path_cmd = get_good_path(pipex, 0, pipex->cmd_split, argv);
 		v_error(pipex, dup2(pipex->prev_pipe, STDIN_FILENO), "dup2", NULL);
+		close(pipex->prev_pipe);
 		v_error(pipex, dup2(pipex->fd_output, STDOUT_FILENO), "dup2", NULL);
+		close(pipex->fd_output);
 		v_error(pipex, execve(pipex->path_cmd, &pipex->cmd_split[0], envp),
 			"execve :", NULL);
 		pipex->fd_output = -1;
@@ -107,7 +102,7 @@ void	first_cmd(t_pipex *pipex, char **av)
 	pipex->fd_input = open(av[1], O_RDONLY | O_CLOEXEC);
 	if (pipex->fd_input == -1)
 	{
-		v_error(pipex, -2, av[1], "No such file or directory");
+		v_error(pipex, 127, av[1], "No such file or directory");
 		pipex->f_cmd_status = -1;
 		exit(1);
 	}
